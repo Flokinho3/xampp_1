@@ -205,5 +205,92 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['adicionar_img'])) {
     header("Location: ../../.Publico/Home/Perfil/Perfil.php");
     exit;
 }
+
+function Add_post($conexao, $certificado, $nome, $conteudo) {
+    if (strlen($conteudo) > 1000) { // Exemplo: limite de 1000 caracteres
+        setMensagem('erro', 'O conteúdo da postagem é muito longo.');
+        header("Location: Home.php");
+        exit;
+    }
+    
+    // Salva a postagem no banco de dados
+    $stmt = mysqli_prepare($conexao, "INSERT INTO posts (certificado, nome, conteudo) VALUES (?, ?, ?)");
+    mysqli_stmt_bind_param($stmt, "sss", $certificado, $nome, $conteudo);
+
+    $success = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    return $success; // Retorna verdadeiro ou falso
+}
+
+function Feed($pagina = 1, $itens_por_pagina = 10) {
+    $conexao = conectar();
+    $offset = ($pagina - 1) * $itens_por_pagina;
+
+    $stmt = $conexao->prepare(
+        "SELECT posts.*, users.IMG, users.Certificado,
+         DATE_FORMAT(posts.data_postagem, '%d/%m/%Y %H:%i') AS data_formatada 
+         FROM posts 
+         LEFT JOIN users ON posts.certificado = users.Certificado 
+         ORDER BY data_postagem DESC 
+         LIMIT ? OFFSET ?"
+    );
+    $stmt->bind_param("ii", $itens_por_pagina, $offset);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $posts = [];
+    while ($row = $result->fetch_assoc()) {
+        $posts[] = $row;
+    }
+
+    $stmt->close();
+    $conexao->close();
+
+    return $posts;
+}
+
+function Pesquisa_img_feed($certificado, $conexao) {
+    // Corrigindo o nome da tabela de 'usuarios' para 'users'
+    $stmt = $conexao->prepare("SELECT IMG FROM users WHERE Certificado = ?");
+    $stmt->bind_param("s", $certificado);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($row = $result->fetch_assoc()) {
+        return $row['IMG'];
+    }
+
+    return null;
+}
+
+function Feed_Usuario($certificado, $pagina = 1, $itens_por_pagina = 10) {
+    $conexao = conectar();
+    $offset = ($pagina - 1) * $itens_por_pagina;
+
+    $stmt = $conexao->prepare(
+        "SELECT posts.*, users.IMG, users.Certificado,
+         DATE_FORMAT(posts.data_postagem, '%d/%m/%Y %H:%i') AS data_formatada 
+         FROM posts 
+         LEFT JOIN users ON posts.certificado = users.Certificado 
+         WHERE posts.certificado = ?
+         ORDER BY data_postagem DESC 
+         LIMIT ? OFFSET ?"
+    );
+    $stmt->bind_param("sii", $certificado, $itens_por_pagina, $offset);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $posts = [];
+    while ($row = $result->fetch_assoc()) {
+        $posts[] = $row;
+    }
+
+    $stmt->close();
+    $conexao->close();
+
+    return $posts;
+}
+
 ?>
 

@@ -1,8 +1,12 @@
+/* Estilos Globais */
 body {
     background-color: #1c1c1c;
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
+/* Container Principal */
 .container {
     width: 50%;
     margin: 0 auto;
@@ -10,78 +14,66 @@ body {
     background-color: #2e2e2e;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
 }
 
 .container h1 {
-    text-align: center;
-    color: #d1c4e9;
-}
-
-.perfil img {
-    width: 150px; /* Definir tamanho fixo para a imagem de perfil */
-    height: 150px;
-    border-radius: 50%;
-    display: block;
-    margin: 0 auto;
-}
-
-.perfil h1, .perfil p {
-    text-align: center;
-    color: #fff;
-}
-
-.Imgs_Perfil {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.Imgs_Perfil img {
-    width: 100px;
-    height: 100px;
-    margin: 10px;
-    border-radius: 5px;
-    object-fit: cover;
-}
-
-.Adicionar_Img {
-    margin-top: 30px;
-    text-align: center;
-}
-
-.Adicionar_Img h1 {
     color: #d1c4e9;
     margin-bottom: 20px;
 }
 
-.Adicionar_Img form {
-    display: inline-block;
+/* Formulário */
+form {
     width: 100%;
 }
 
-.Adicionar_Img form input[type="file"] {
-    margin-bottom: 10px;
+form input[type="email"],
+form input[type="password"] {
+    width: 95%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #7e57c2;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
 }
 
-.Adicionar_Img form button {
+form button {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #7e57c2;
     border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
+}
+
+form input[type="email"],
+form input[type="password"] {
+    background-color: #1c1c1c;
+    color: #fff;
+    outline: none;
+}
+
+form input[type="email"]::placeholder,
+form input[type="password"]::placeholder {
+    color: #7e57c2;
+}
+
+form button {
     background-color: #7e57c2;
     color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-.Adicionar_Img form button:hover {
+form button:hover {
     background-color: #5e35b1;
 }
 
+/* Links */
 .container a {
+    display: block;
     text-decoration: none;
     color: #fff;
     background-color: #7e57c2;
@@ -89,7 +81,6 @@ body {
     border-radius: 5px;
     margin: 10px 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    display: block;
     transition: background-color 0.3s;
 }
 
@@ -97,6 +88,7 @@ body {
     background-color: #5e35b1;
 }
 
+/* Alerta */
 .alert {
     padding: 10px;
     margin: 10px 0;
@@ -116,4 +108,72 @@ body {
     color: #f8bbd0;
     background-color: #880e4f;
     border: 1px solid #c2185b;
+}
+
+/* Logo */
+.Logo img {
+    max-width: 100px;
+    margin: 20px auto;
+    display: block;
+}
+
+/* Estilos para Perfil */
+.perfil img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: block;
+}
+
+.perfil h1,
+.perfil p {
+    color: #fff;
+    margin: 5px 0;
+}
+
+/* Imagens do Perfil */
+.Imgs_Perfil {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.Imgs_Perfil img {
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+/* Adicionar Imagem */
+.Adicionar_Img {
+    margin-top: 30px;
+}
+
+.Adicionar_Img h1 {
+    color: #d1c4e9;
+    margin-bottom: 20px;
+}
+
+.Adicionar_Img form input[type="file"] {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.Adicionar_Img form button {
+    background-color: #7e57c2;
+    color: #fff;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.Adicionar_Img form button:hover {
+    background-color: #5e35b1;
 }

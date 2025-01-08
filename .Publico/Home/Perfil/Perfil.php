@@ -4,7 +4,7 @@ include '../../../.Privado/Server/Server.php';
 
 $conexao = conectar();
 
-$img_padrao = "../../IMGS/Perfi_padaro.png";
+$img_padrao = "../../IMGS/Perfi_padrao.png";
 
 // Verificar se o certificado está na sessão
 if (isset($_SESSION['certificado'])) {
@@ -19,28 +19,22 @@ if (isset($_SESSION['certificado'])) {
 }
 
 // Definir a imagem do usuário
-$img_user = $img_padrao; // Definir imagem padrão inicialmente
+$img_user = $img_padrao;
+echo "<script>console.log('Imagem padrão: $img_user');</script>";
 if (!empty($dadosUsuario['IMG']) && !empty($dadosUsuario['Certificado'])) {
-    $caminhoImagem = $dadosUsuario['Certificado'] . "/" . $dadosUsuario['IMG'];
+    echo "<script>console.log('Certificado: " . $dadosUsuario['Certificado'] . "');</script>";
+    $caminhoImagem = "../Perfil/" . $dadosUsuario['Certificado'] . "/" . $dadosUsuario['IMG'];
+    echo "<script>console.log('Caminho da imagem: $caminhoImagem');</script>";
     if (file_exists($caminhoImagem)) {
         $img_user = $caminhoImagem . "?v=" . time(); // Adicionar timestamp para evitar cache
-    } else {
-        error_log("Imagem não encontrada: " . realpath($caminhoImagem));
     }
+    echo "<script>console.log('Imagem do usuário: $img_user');</script>";
 }
 
 // Verificar imagens personalizadas
-$imagensUsuario = [];
-if (!empty($dadosUsuario['Certificado'])) {
-    $imagensUsuario = Verificar_Imgs($dadosUsuario['Certificado']);
-}
-
-$imagensAleatorias = [];
-if (!empty($imagensUsuario)) {
-    $imagensAleatorias = array_slice($imagensUsuario, 0, 3); // Limitar a 3 imagens
-    shuffle($imagensAleatorias); // Embaralhar as imagens
-}
-
+$imagensUsuario = !empty($dadosUsuario['Certificado']) ? Verificar_Imgs($dadosUsuario['Certificado']) : [];
+$imagensAleatorias = array_slice($imagensUsuario, 0, 3);
+shuffle($imagensAleatorias);
 
 desconectar($conexao);
 ?>
@@ -49,7 +43,7 @@ desconectar($conexao);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?php echo htmlspecialchars('../../CSS/Perfil.css', ENT_QUOTES, 'UTF-8'); ?>">
+    <link rel="stylesheet" href="../../CSS/Perfil.css?v=<?php echo time(); ?>">
     <title>Perfil <?php echo htmlspecialchars($dadosUsuario['Nome'], ENT_QUOTES, 'UTF-8'); ?></title>
 </head>
 <body>
@@ -65,8 +59,7 @@ desconectar($conexao);
         .then(response => response.json())
         .then(data => {
             if (data.sucesso) {
-                alert('Imagem de perfil atualizada com sucesso!');
-                location.reload(); // Atualizar a página para refletir a mudança
+                location.reload();
             } else {
                 alert('Erro ao atualizar imagem de perfil: ' + data.erro);
             }
@@ -77,18 +70,17 @@ desconectar($conexao);
         });
     }
     </script>
-    <div class="Top_bar">
+    <div class="top-bar">
         <a href="../../../.Publico/Home/Home.php">Voltar</a>
         <a href="#">Perfil</a>
     </div>
 
     <div class="container">
-        <!-- Exibir Mensagens de Feedback -->
         <?php if (isset($_SESSION['mensagem'])): ?>
             <div class="alert <?php echo $_SESSION['mensagem']['tipo']; ?>">
                 <?php 
                     echo htmlspecialchars($_SESSION['mensagem']['conteudo'], ENT_QUOTES, 'UTF-8'); 
-                    unset($_SESSION['mensagem']); // Limpar a mensagem após exibir
+                    unset($_SESSION['mensagem']);
                 ?>
             </div>
         <?php endif; ?>
@@ -99,10 +91,8 @@ desconectar($conexao);
             <p>Email: <?php echo htmlspecialchars($dadosUsuario['Email'], ENT_QUOTES, 'UTF-8'); ?></p>
             <p>ID: <?php echo htmlspecialchars($dadosUsuario['ID'], ENT_QUOTES, 'UTF-8'); ?></p>
         </div>
-        <div class="Imgs_Perfil">
-            
-        </div>
-        <div class="Adicionar_Img">
+
+        <div class="adicionar-img">
             <h1>Adicionar Imagem</h1>
             <form action="../../../.Privado/Server/Server.php" method="post" enctype="multipart/form-data">
                 <input type="file" name="img" accept="image/*" required>
@@ -121,6 +111,5 @@ desconectar($conexao);
             </div>
         </div>
     </div>
-
 </body>
 </html>

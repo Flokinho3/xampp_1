@@ -1,49 +1,52 @@
 body {
-    background-color: #000;
+    background-color: #2c2c2c;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.Top_bar {
+.top-bar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: #1a1a1a;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    padding: 10px 0;
+    gap: 20px;
+    padding: 15px 0;
     z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
-.Top_bar a {
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
+.top-bar a {
+    color: #e0e0e0;
+    font-size: 18px;
+    font-weight: 500;
     text-decoration: none;
-    transition: color 0.2s;
+    transition: color 0.3s;
 }
 
-.Top_bar a:hover {
-    color: #00ffff;
+.top-bar a:hover {
+    color: #b39ddb;
 }
 
 .container {
-    margin-top: 80px; /* Espaço para não sobrepor a Top_bar */
-    width: 90%;
-    background-color: rgba(0, 255, 255, 0.411);
-    padding: 20px;
-    border-radius: 20px;
+    margin-top: 100px;
+    width: 80%;
+    max-width: 800px;
+    background-color: #3e3e3e;
+    padding: 30px;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 30px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
 .perfil {
@@ -53,89 +56,90 @@ body {
 }
 
 .perfil img {
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
-    border: 4px solid #fff;
+    border: 3px solid #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .perfil h1 {
     color: #fff;
-    font-size: 24px;
-    font-weight: bold;
-    margin: 10px 0;
+    font-size: 26px;
+    font-weight: 600;
+    margin: 15px 0;
 }
 
 .perfil p {
-    color: #fff;
+    color: #d1c4e9;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 400;
 }
 
-.perfil p:hover {
-    color: #00ffff;
-}
-
-.Adicionar_Img {
+.adicionar-img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
 }
 
-.Adicionar_Img h1 {
+.adicionar-img h1 {
     color: #fff;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 15px;
 }
 
-.Adicionar_Img form {
+.adicionar-img form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
 }
 
-.Adicionar_Img input[type="file"] {
-    padding: 5px;
+.adicionar-img input[type="file"] {
+    padding: 8px;
     color: #fff;
-    background-color: #444;
-    border: 1px solid #00ffff;
+    background-color: #5e5e5e;
+    border: 1px solid #b39ddb;
     border-radius: 5px;
 }
 
-.Adicionar_Img button {
-    padding: 10px 20px;
+.adicionar-img button {
+    padding: 12px 25px;
     color: #fff;
-    background-color: #00ffff;
+    background-color: #7e57c2;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.3s;
 }
 
-.Adicionar_Img button:hover {
-    background-color: #007f7f;
+.adicionar-img button:hover {
+    background-color: #5e35b1;
 }
 
 .imagens-aleatorias {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 15px;
 }
 
 .imagens-aleatorias img {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: 5px;
     cursor: pointer;
     border: 2px solid transparent;
-    transition: transform 0.2s, border-color 0.2s;
+    transition: transform 0.3s, border-color 0.3s;
 }
 
 .imagens-aleatorias img:hover {
     transform: scale(1.1);
-    border-color: #7e57c2;
+    border-color: #b39ddb;
+}
+
+.container > div {
+    margin-bottom: 25px;
 }

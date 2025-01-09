@@ -8,6 +8,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Top Bar */
 .top-bar {
     position: fixed;
     top: 0;
@@ -35,6 +36,7 @@ body {
     color: #b39ddb;
 }
 
+/* Container */
 .container {
     margin-top: 100px;
     width: 80%;
@@ -49,6 +51,7 @@ body {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
+/* Perfil */
 .perfil {
     display: flex;
     flex-direction: column;
@@ -76,6 +79,7 @@ body {
     font-weight: 400;
 }
 
+/* Adicionar Imagem */
 .adicionar-img {
     display: flex;
     flex-direction: column;
@@ -138,8 +142,4 @@ body {
 .imagens-aleatorias img:hover {
     transform: scale(1.1);
     border-color: #b39ddb;
-}
-
-.container > div {
-    margin-bottom: 25px;
 }

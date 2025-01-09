@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trocar Senha</title>
+    <link rel="stylesheet" href="RecuperarSenha.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Trocar Senha</h1>
+        <p>Digite sua nova senha abaixo:</p>
+        <form action="RecuperarSenha.php" method="post">
+            <input type="hidden" name="certificado" value="{certificado}">
+            <label for="nova_senha">Nova Senha:</label>
+            <input type="password" id="nova_senha" name="nova_senha" placeholder="Nova Senha" required>
+            <label for="confirmar_senha">Confirmar Nova Senha:</label>
+            <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirmar Nova Senha" required>
+            <button type="submit">Atualizar Senha</button>
+        </form>
+    </div>
+</body>
+</html>

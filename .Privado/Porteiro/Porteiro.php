@@ -33,6 +33,20 @@ if (isset($_POST['acao'])) {
             exit;
         }
     }
+
+    if ($acao === 'RecuperarSenha') {
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        $resultado = RecuperarSenha($conexao, $email);
+        if ($resultado) {
+            $_SESSION['resultado'] = $resultado;
+            header("Location: ../../.Publico/Entrada/RecuperarSenha.php");
+            exit;
+        } else {
+            header("Location: ../../.Publico/Entrada/RecuperarSenha.php");
+            exit;
+        }
+
+    }
 } 
 desconectar($conexao);
 ?>

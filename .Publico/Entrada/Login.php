@@ -30,7 +30,7 @@ session_start();
             <input type="password" name="senha" placeholder="Senha">
             <button type="submit">Login</button>
         </form>
-        <a href="RecuperarSenha.php">Esqueceu a senha?</a>    
+        <a href="../../RecuperarSenha.php">Esqueceu a senha?</a>    
         <a href="Cadastro.php">Cadastre-se</a>
     </div>
 </body>

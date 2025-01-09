@@ -107,6 +107,65 @@ function Login($conexao, $identificador, $senha) {
     }
 }
 
+function RecuperarSenha($conexao, $email) {
+    $stmt = mysqli_prepare($conexao, "SELECT Certificado, Link FROM users WHERE Email = ?");
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
+    $resultado = mysqli_stmt_get_result($stmt);
+
+    if ($row = mysqli_fetch_assoc($resultado)) {
+        if ($row['Link']) {
+            return ['status' => 'existente', 'mensagem' => 'Um link de recuperação já foi enviado para seu email.'];
+        }
+
+        $certificado = $row['Certificado'];
+        $link = "http://localhost/xampp/RecuperarSenha.php?certificado=" . $certificado;
+
+        $stmt = mysqli_prepare($conexao, "UPDATE users SET Link = ? WHERE Email = ?");
+        if (!$stmt) {
+            return ['status' => 'erro', 'mensagem' => 'Erro ao preparar a atualização: ' . mysqli_error($conexao)];
+        }
+
+        mysqli_stmt_bind_param($stmt, "ss", $link, $email);
+        if (!mysqli_stmt_execute($stmt)) {
+            return ['status' => 'erro', 'mensagem' => 'Erro ao atualizar o link: ' . mysqli_stmt_error($stmt)];
+        }
+
+        if (mysqli_affected_rows($conexao) > 0) {
+            return ['status' => 'novo', 'mensagem' => 'Um link de recuperação foi enviado para seu email.', 'link' => $link];
+        }
+    }
+
+    return ['status' => 'erro', 'mensagem' => 'Email não encontrado.'];
+}
+
+function Verificar_Link_Recuperacao($conexao, $certificado) {
+    $stmt = mysqli_prepare($conexao, "SELECT Link FROM users WHERE Certificado = ? AND Expiracao > NOW()");
+    mysqli_stmt_bind_param($stmt, "s", $certificado);
+    mysqli_stmt_execute($stmt);
+    $resultado = mysqli_stmt_get_result($stmt);
+    
+    if ($row = mysqli_fetch_assoc($resultado)) {
+        return !empty($row['Link']);
+    }
+    return false;
+}
+
+function Atualizar_Senha($conexao, $certificado, $senha) {
+    //verifica se o link existe
+    $stmt = mysqli_prepare($conexao, "SELECT Link FROM users WHERE Certificado = ?");
+    mysqli_stmt_bind_param($stmt, "s", $certificado);
+    mysqli_stmt_execute($stmt);
+    $resultado = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($resultado);
+    $link = $row['Link'];
+    if (file_exists($link)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function Verificar_Certificado($conexao, $certificado) {
     // Consulta os dados do usuário pelo certificado
     $stmt = mysqli_prepare($conexao, "SELECT Email, IMG, Nome, ID, Certificado FROM users WHERE Certificado = ?");

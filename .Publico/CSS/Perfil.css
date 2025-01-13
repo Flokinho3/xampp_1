@@ -143,3 +143,86 @@ body {
     transform: scale(1.1);
     border-color: #b39ddb;
 }
+
+.botao-excluir {
+    margin-top: 20px;
+}
+
+.botao-excluir button {
+    padding: 12px 25px;
+    color: #fff;
+    background-color: #e41010;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.botao-excluir button:hover {
+    background-color: #b1355a6c;
+}
+
+
+/* Ajustes para responsividade */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 15px;
+        margin-top: 70px;
+    }
+
+    .top-bar {
+        padding: 10px 0;
+    }
+
+    .top-bar a {
+        font-size: 16px;
+    }
+
+    .perfil img {
+        width: 150px;
+        height: 150px;
+    }
+
+    .perfil h1 {
+        font-size: 22px;
+    }
+
+    .adicionar-img input[type="file"] {
+        width: 100%;
+    }
+
+    .imagens-aleatorias img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .adicionar-img button {
+        width: 100%;
+    }
+
+    .botao-excluir button {
+        width: 100%;
+    }
+    
+}
+
+@media (max-width: 480px) {
+    .perfil img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .perfil h1 {
+        font-size: 20px;
+    }
+
+    .imagens-aleatorias {
+        gap: 10px;
+    }
+
+    .imagens-aleatorias img {
+        width: 40px;
+        height: 40px;
+    }
+}

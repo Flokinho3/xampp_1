@@ -100,20 +100,53 @@ body {
     .container {
         width: 90%;
         padding: 15px;
+        margin: 20px auto;
     }
 
     .container h1 {
-        font-size: 1.5rem;
+        font-size: 24px;
+    }
+
+    .container form input {
+        font-size: 16px;
+    }
+
+    .container form button {
+        font-size: 16px;
+    }
+
+    .container .Logo img {
+        width: 70%;
+    }
+
+    .Alerta {
+        width: 90%;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .container h1 {
+        font-size: 20px;
     }
 
     .container form input,
     .container form button {
-        font-size: 1rem;
+        font-size: 14px;
     }
 
     .container .Logo img {
         width: 80%;
-        height: auto;
+    }
+
+    .Alerta {
+        width: 95%;
+        font-size: 12px;
     }
 }
 

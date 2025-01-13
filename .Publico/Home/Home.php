@@ -49,7 +49,7 @@ desconectar($conexao);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS/Home.css?v=<?php echo time(); ?>">
-   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Painel do Usuário</title>
 </head>
 <body>
@@ -94,7 +94,8 @@ desconectar($conexao);
                         $img_user = $caminhoImagem;
                     }
                 }
-        ?>
+                $likes = lokes($conexao, $post['id']);
+                ?>
                 <div class="Postagem">
                     <div class="User">
                         <a href="Perfil_pev.php?certificado=<?php echo htmlspecialchars($post['certificado'], ENT_QUOTES, 'UTF-8'); ?>">
@@ -103,6 +104,14 @@ desconectar($conexao);
                         <div class="UserInfo">
                             <h2><a href="Perfil_pev.php?certificado=<?php echo htmlspecialchars($post['certificado'], ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($post['nome'], ENT_QUOTES, 'UTF-8'); ?></a></h2>
                             <span class="DataPostagem">Postado em <?php echo htmlspecialchars($post['data_formatada'], ENT_QUOTES, 'UTF-8'); ?></span>
+                        </div>
+                        <div class="like">
+                            <a href="Like.php?post=<?php echo htmlspecialchars($post['id'], ENT_QUOTES, 'UTF-8'); ?>&acao=like"><i class="fas fa-thumbs-up"></i></a>
+                            <span><?php echo htmlspecialchars($post['Likes'], ENT_QUOTES, 'UTF-8'); ?></span>
+                        </div>
+                        <div class="deslike">
+                            <a href="Like.php?post=<?php echo htmlspecialchars($post['id'], ENT_QUOTES, 'UTF-8'); ?>&acao=deslike"><i class="fas fa-thumbs-down"></i></a>
+                            <span><?php echo htmlspecialchars($post['Deslike'], ENT_QUOTES, 'UTF-8'); ?></span>
                         </div>
                     </div>
                     <div class="PostContent">

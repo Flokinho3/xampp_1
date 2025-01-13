@@ -139,6 +139,59 @@ body {
     width: 100%;
 }
 
+.like {
+    margin-left: 50%;
+    width: 30px;
+    height: 30px;
+    background-color: #5dd367;
+    border-radius: 50%;
+}
+
+.like:hover {
+    background-color: #07913c;
+}
+
+.deslike{
+    width: 30px;
+    height: 30px;
+    background-color: #ca0d0d;
+    border-radius: 50%;
+}
+
+.deslike:hover {
+    background-color: #7a0d0d;
+}
+
+.like i {
+    width: 30px;
+    height: 30px;
+    background-color: #5dd367;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.like:hover i {
+    background-color: #07913c;
+}
+
+.deslike i {
+    width: 30px;
+    height: 30px;
+    background-color: #ca0d0d;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.deslike:hover i {
+    background-color: #7a0d0d;
+}
+
+
+
 .User {
     display: flex;
     align-items: center;
@@ -215,4 +268,67 @@ body {
 .Mensagem.erro {
     background-color: #dc3545;
     color: #fff;
+}
+
+@media (max-width: 768px) {
+    .Top_bar {
+        padding: 10px;
+        height: auto;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .Top_bar ul {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .Top_bar ul li {
+        width: 100%;
+        margin: 0;
+    }
+
+    .Top_bar ul li a {
+        display: block;
+        text-align: center;
+        padding: 12px;
+    }
+
+    .Nova_Postagem {
+        width: 95%;
+        padding: 15px;
+        margin: 10px auto;
+    }
+
+    .Feed {
+        width: 95%;
+    }
+
+    .Postagem {
+        padding: 15px;
+    }
+
+    .User img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .UserInfo h2 {
+        font-size: 16px;
+    }
+
+    .PostContent {
+        font-size: 14px;
+    }
+
+    .like, .deslike {
+        width: 25px;
+        height: 25px;
+    }
+
+    .like i, .deslike i {
+        width: 25px;
+        height: 25px;
+    }
 }

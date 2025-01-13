@@ -177,3 +177,54 @@ form button:hover {
 .Adicionar_Img form button:hover {
     background-color: #5e35b1;
 }
+
+/* Ajustes para responsividade */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 15px;
+        margin: 20px auto;
+    }
+
+    form input[type="email"],
+    form input[type="password"] {
+        width: 90%;
+        font-size: 16px;
+    }
+
+    form button {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .Logo img {
+        max-width: 80px;
+    }
+
+    .perfil img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .Imgs_Perfil img {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    form input[type="email"],
+    form input[type="password"] {
+        width: 85%;
+        font-size: 14px;
+    }
+
+    .alert {
+        font-size: 14px;
+    }
+}

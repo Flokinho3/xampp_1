@@ -111,5 +111,12 @@ desconectar($conexao);
             </div>
         </div>
     </div>
+    <div class="botao-excluir">
+        <form action="../../../.Privado/Porteiro/Excluir_conta.php" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir sua conta? Esta ação é irreversível!');">
+            <input type="hidden" name="acao" value="excluir_conta">
+            <input type="hidden" name="certificado" value="<?php echo htmlspecialchars($dadosUsuario['Certificado'], ENT_QUOTES, 'UTF-8'); ?>">
+            <button type="submit">Excluir Conta?</button>
+        </form>
+    </div>
 </body>
 </html>

@@ -177,26 +177,6 @@ function Verificar_Certificado($conexao, $certificado) {
     return $resultado ?: null;
 }
 
-
-function Verificar_Imgs($certificado) {
-    $diretorioBase = realpath(__DIR__ . '/../../.Publico/Home/Perfil/') . "/";
-    $diretorioUsuario = $diretorioBase . $certificado . "/";
-
-    // Verificar ou criar o diretório do usuário
-    if (!is_dir($diretorioUsuario)) {
-        if (!mkdir($diretorioUsuario, 0777, true)) {
-            return ["erro" => "Falha ao criar o diretório do usuário."];
-        }
-    }
-
-    // Listar imagens na pasta do usuário
-    $imagens = array_filter(scandir($diretorioUsuario), function($arquivo) use ($diretorioUsuario) {
-        return is_file($diretorioUsuario . $arquivo) && preg_match('/\.(jpg|jpeg|png|gif|bmp)$/i', $arquivo);
-    });
-
-    return array_values($imagens); // Retornar os nomes das imagens
-}
-
 function Adicionar_Img($conexao, $certificado, $img) {
     $diretorioBase = realpath(__DIR__ . '/../../.Publico/Home/Perfil/') . "/";
     $diretorioUsuario = $diretorioBase . $certificado . "/";
@@ -232,17 +212,7 @@ function Adicionar_Img($conexao, $certificado, $img) {
         return ["tipo" => "alert-error", "conteudo" => "Falha ao mover o arquivo para o diretório do usuário."];
     }
 }
-
-// Função para definir mensagens de sessão
-if (!function_exists('setMensagem')) {
-    function setMensagem($tipo, $conteudo) {
-        $_SESSION['mensagem'] = [
-            'tipo' => $tipo,
-            'conteudo' => $conteudo
-        ];
-    }
-}
-
+  
 // Verificar se o formulário de upload foi submetido
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['adicionar_img'])) {
     $conexao = conectar();
@@ -350,6 +320,138 @@ function Feed_Usuario($certificado, $pagina = 1, $itens_por_pagina = 10) {
 
     return $posts;
 }
+
+function updatePostReaction($conexao, $id_post, $column, $certificado) {
+    // Primeiro, verifica se a tabela existe
+    $check_table = mysqli_query($conexao, "SHOW TABLES LIKE 'post_reactions'");
+    if (mysqli_num_rows($check_table) == 0) {
+        // Cria a tabela se não existir
+        $create_table = "CREATE TABLE IF NOT EXISTS post_reactions (
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            post_id INT NOT NULL,
+            user_certificado VARCHAR(255) NOT NULL,
+            reaction_type ENUM('like', 'deslike') NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (post_id) REFERENCES posts(id),
+            UNIQUE KEY unique_reaction (post_id, user_certificado)
+        )";
+        
+        if (!mysqli_query($conexao, $create_table)) {
+            setMensagem('erro', 'Erro ao criar tabela de reações');
+            return false;
+        }
+    }
+
+    // Resto do código permanece o mesmo...
+    try {
+        // Verifica se o usuário já reagiu a este post
+        $check_sql = "SELECT reaction_type FROM post_reactions 
+                      WHERE post_id = ? AND user_certificado = ?";
+        $check_stmt = mysqli_prepare($conexao, $check_sql);
+        mysqli_stmt_bind_param($check_stmt, "is", $id_post, $certificado);
+        mysqli_stmt_execute($check_stmt);
+        $result = mysqli_stmt_get_result($check_stmt);
+        
+        if ($row = mysqli_fetch_assoc($result)) {
+            // Usuário já reagiu
+            $existing_reaction = $row['reaction_type'];
+            $new_reaction = $column === 'Likes' ? 'like' : 'deslike';
+            
+            if ($existing_reaction === $new_reaction) {
+                // Remove a reação se for a mesma
+                mysqli_begin_transaction($conexao);
+                try {
+                    // Remove a reação da tabela post_reactions
+                    $delete_sql = "DELETE FROM post_reactions 
+                                 WHERE post_id = ? AND user_certificado = ?";
+                    $delete_stmt = mysqli_prepare($conexao, $delete_sql);
+                    mysqli_stmt_bind_param($delete_stmt, "is", $id_post, $certificado);
+                    mysqli_stmt_execute($delete_stmt);
+                    
+                    // Decrementa o contador na tabela posts
+                    $update_sql = "UPDATE posts SET $column = $column - 1 WHERE id = ?";
+                    $update_stmt = mysqli_prepare($conexao, $update_sql);
+                    mysqli_stmt_bind_param($update_stmt, "i", $id_post);
+                    mysqli_stmt_execute($update_stmt);
+                    
+                    mysqli_commit($conexao);
+                    return true;
+                } catch (Exception $e) {
+                    mysqli_rollback($conexao);
+                    return false;
+                }
+            }
+            return false; // Não permite mudar o tipo de reação
+        }
+        
+        // Adiciona nova reação
+        mysqli_begin_transaction($conexao);
+        try {
+            // Registra a reação na tabela post_reactions
+            $insert_sql = "INSERT INTO post_reactions (post_id, user_certificado, reaction_type) 
+                          VALUES (?, ?, ?)";
+            $reaction_type = $column === 'Likes' ? 'like' : 'deslike';
+            $insert_stmt = mysqli_prepare($conexao, $insert_sql);
+            mysqli_stmt_bind_param($insert_stmt, "iss", $id_post, $certificado, $reaction_type);
+            mysqli_stmt_execute($insert_stmt);
+            
+            // Incrementa o contador na tabela posts
+            $update_sql = "UPDATE posts SET $column = $column + 1 WHERE id = ?";
+            $update_stmt = mysqli_prepare($conexao, $update_sql);
+            mysqli_stmt_bind_param($update_stmt, "i", $id_post);
+            mysqli_stmt_execute($update_stmt);
+            
+            mysqli_commit($conexao);
+            return true;
+        } catch (Exception $e) {
+            mysqli_rollback($conexao);
+            return false;
+        }
+    } catch (Exception $e) {
+        setMensagem('erro', 'Erro ao processar reação: ' . $e->getMessage());
+        return false;
+    }
+}
+
+function lokes($conexao, $id_post) {
+    //calcula o numero de likes
+    $sql = "SELECT Likes FROM posts WHERE id = ?";
+    $stmt = mysqli_prepare($conexao, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $id_post);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+    $likes = $row['Likes'];
+
+    $sql = "SELECT Deslike FROM posts WHERE id = ?";
+    $stmt = mysqli_prepare($conexao, $sql);
+    mysqli_stmt_bind_param($stmt, "i", $id_post);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_assoc($result);
+    $deslikes = $row['Deslike'];
+
+    return $likes - $deslikes;
+}
+
+function Verificar_Imgs($certificado) {
+    $diretorioBase = realpath(__DIR__ . '/../../.Publico/Home/Perfil/') . "/";
+    $diretorioUsuario = $diretorioBase . $certificado . "/";
+
+    // Verificar se o diretório existe
+    if (!is_dir($diretorioUsuario)) {
+        return [];
+    }
+
+    // Listar imagens na pasta do usuário
+    $imagens = array_filter(scandir($diretorioUsuario), function($arquivo) use ($diretorioUsuario) {
+        return is_file($diretorioUsuario . $arquivo) && 
+               preg_match('/\.(jpg|jpeg|png|gif|bmp)$/i', $arquivo);
+    });
+
+    return array_values($imagens); // Remove índices numéricos
+}
+
 
 ?>
 
